@@ -359,4 +359,4 @@ See [`SOURCES.md`](SOURCES.md) for primary documentation, Dune methodology and m
 
 ## Disclaimer
 
-Independent research for educational and portfolio purposes. Not affiliated with Uniswap Labs, the Uniswap Foundation or Nibiru. Nothing here is financial advice.
+Independent research for educational and portfolio purposes. Not affiliated with Uniswap Labs and the Uniswap Foundation. Nothing here is financial advice.
