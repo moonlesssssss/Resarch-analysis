@@ -1,6 +1,6 @@
 # Sources
 
-Snapshot date: 29 September 2026.
+Snapshot date: 30 September 2026.
 
 ## Uniswap primary sources
 
