@@ -2,8 +2,8 @@
 
 > Independent research project for Crypto Research / On-chain Analyst roles  
 > Snapshot date: **30 September 2026**  
-> Author: **<moonlesssssss>**  
-> Dune dashboard: **<https://dune.com/moonlesssssss/uniswap-market-structure>**
+> Author: **@moonlesssssss**  
+> Dune dashboard: **[Live on-chain dashboard](https://dune.com/moonlesssssss/uniswap-market-structure)**
 
 The dashboard covers:
 - cleaned daily DEX volume;
@@ -48,7 +48,6 @@ At the 29 September 2026 snapshot, DefiLlama reports approximately:
 
 The share figure is a simple `91.892 / 274.543` calculation and should be treated as a point-in-time indicator, not a permanent market-share estimate.
 
-![DEX volume snapshot](assets/dex_30d_volume.png)
 
 ---
 
@@ -138,7 +137,6 @@ From a research perspective, the important question is whether Unichain creates 
 
 Current TVL is still highly concentrated on Ethereum, while Uniswap is broadly deployed across many networks:
 
-![Uniswap TVL by chain](assets/uniswap_tvl_by_chain.png)
 
 A useful future dashboard should therefore track both absolute growth and chain-mix migration.
 
@@ -252,34 +250,71 @@ Volume, active-address and TVL metrics can be distorted by bots, smart-wallet ar
 
 ---
 
-## 9. On-chain work I would build next
+## 9. On-chain findings
 
-This repository includes starter DuneSQL queries for:
+I built a [live Dune dashboard](https://dune.com/moonlesssssss/uniswap-market-structure) to test the thesis against on-chain data rather than relying only on protocol documentation or market-level snapshots.
 
-- daily volume;
-- active transaction senders;
-- chain mix;
-- version mix;
-- top pairs;
-- new versus returning addresses;
-- wallet volume concentration.
+### 9.1 Protocol-version migration
 
-The most interesting extension is an **event study around protocol-fee activation**.
+After removing identified data-quality outliers, the migration toward **Uniswap v4 remains visible** in the data.
 
-Proposed output:
+- v2 declines to a relatively small share of monthly volume.
+- v3 remains a major source of trading activity.
+- v4 grows into a major share of monthly volume alongside v3.
+
+The important point is that the v4 trend survives the cleaning process. It is therefore not explained solely by a small number of extreme transactions.
+
+### 9.2 Multichain market structure
+
+Uniswap activity is distributed across multiple chains rather than being exclusively dependent on Ethereum mainnet.
+
+During validation, Robinhood Chain initially appeared anomalously dominant in raw volume. Instead of excluding the chain outright, I audited its leading pairs using transaction count, active senders, average trade size, median trade size, p99 trade size and maximum trade size.
+
+After removing confirmed outliers, the remaining Robinhood activity was spread across high-transaction-count markets with substantially smaller median trade sizes, so the chain was retained in the cleaned dataset.
+
+### 9.3 Market concentration
+
+The largest markets account for a meaningful share of Uniswap volume, but activity extends across a broader set of pairs and chains.
+
+Markets are analyzed as **blockchain + token pair** rather than aggregating identical symbols across networks. This avoids mixing economically different markets into a single label.
+
+### 9.4 Sender concentration
+
+Across the observed 30-day period, the 10 largest transaction senders generally account for a **minority** of cleaned daily DEX volume.
+
+I intentionally describe these entities as **transaction senders**, not users or whales, because `tx_from` can represent bots, routers, smart accounts, contracts or other automated actors.
+
+### 9.5 Data-quality investigation
+
+Raw aggregation of Dune's `dex.trades` dataset produced several extreme USD-volume outliers.
+
+The workflow used in this project was:
 
 ```text
-Protocol fee change
+raw aggregation
       |
-      +--> volume trend
-      +--> TVL / active liquidity
-      +--> LP migration
-      +--> market share
-      +--> fees captured
-      +--> UNI burned
+      v
+sanity check
+      |
+      v
+pair / transaction investigation
+      |
+      v
+targeted exclusions
+      |
+      v
+cleaned analytical dataset
 ```
 
-The goal is to distinguish a true improvement in protocol economics from a simple transfer of economics away from LPs.
+The largest anomalies were traced to specific token pairs and transaction hashes. I used targeted exclusions instead of:
+
+- deleting entire chains;
+- applying a blanket maximum-trade-size filter;
+- assuming raw `amount_usd` was ground truth.
+
+This preserves legitimate large trades while making the cleaning methodology explicit and reproducible.
+
+The cleaned dataset powers the dashboard views for daily volume, chain mix, version migration, top markets and sender concentration.
 
 ---
 
@@ -305,24 +340,22 @@ All DefiLlama metrics in this report are a 29 September 2026 snapshot and should
 uniswap-research/
 ├── README.md
 ├── SOURCES.md
-├── assets/
-│   ├── dex_30d_volume.png
-│   └── uniswap_tvl_by_chain.png
 └── sql/
-    ├── 01_daily_volume.sql
-    ├── 02_active_addresses.sql
-    ├── 03_chain_mix.sql
-    ├── 04_version_mix.sql
-    ├── 05_top_pairs.sql
-    ├── 06_new_vs_returning.sql
-    └── 07_wallet_concentration.sql
+    ├── 01_daily_volume_cleaned.sql
+    ├── 02_chain_mix_cleaned.sql
+    ├── 03_version_mix_cleaned.sql
+    ├── 04_top_markets_cleaned.sql
+    ├── 05_sender_concentration_cleaned.sql
+    └── 06_data_quality_audit.sql
 ```
+
+The SQL files mirror the methodology used in the live Dune dashboard.
 
 ---
 
 ## Sources
 
-See [`SOURCES.md`](SOURCES.md) for primary documentation and market-data references.
+See [`SOURCES.md`](SOURCES.md) for primary documentation, Dune methodology and market-data references.
 
 ## Disclaimer
 
