@@ -1,7 +1,7 @@
 # Uniswap: From AMM to Programmable Liquidity Layer
 
 > Independent research project for Crypto Research / On-chain Analyst roles  
-> Snapshot date: **29 September 2026**  
+> Snapshot date: **30 September 2026**  
 > Author: **<moonlesssssss>**  
 > Dune dashboard: **<https://dune.com/moonlesssssss/uniswap-market-structure>**
 
