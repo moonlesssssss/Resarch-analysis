@@ -56,6 +56,9 @@ Snapshot date: 30 September 2026.
 16. Hyperliquid order book documentation  
     https://hyperliquid.gitbook.io/hyperliquid-docs/trading/order-book
 
+17. Live Dune dashboard - Uniswap Market Structure  
+    https://dune.com/moonlesssssss/uniswap-market-structure
+
 ## Notes
 
 - Market figures are point-in-time snapshots and can change rapidly.
@@ -63,5 +66,3 @@ Snapshot date: 30 September 2026.
 - Comparative claims in the writeup are based on documented protocol mechanics, not investment recommendations.
 
 
-17. Live Dune dashboard - Uniswap Market Structure  
-    https://dune.com/moonlesssssss/uniswap-market-structure
